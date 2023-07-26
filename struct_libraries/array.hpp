@@ -10,7 +10,7 @@ struct Array
 
 Array Create(int s=10)
 {
-    cout<<"\n\n------Create Incomplete2------\n\n";
+    cout<<"\n\n------Create Incomplete------\n\n";
     Array ptr;
     ptr.arr = new int[s];
     ptr.size = s;
