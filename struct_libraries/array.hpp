@@ -10,11 +10,15 @@ struct Array
 
 Array Create(int s=10)
 {
-    cout<<"\n\n------Create Incomplete------\n\n";
+    if(s<1)
+    {
+        s=0;
+    }
     Array ptr;
     ptr.arr = new int[s];
     ptr.size = s;
     return ptr;
+
 }   // Major fault
 void Print(Array arr)
 {
@@ -27,26 +31,26 @@ void Print(Array arr)
 }
 void DeleteArray(Array& arr)
 {
-    cout<<"\n\n------Delete Incomplete------\n\n";
+    if(arr.size>0)
+    {
     delete [] arr.arr;
     arr.size = 0;
+    }
 }
 int Get(Array arr, const int idx)
 {
-    cout<<"\n\n------Get Incomplete------\n\n";
+    if(idx<0&&idx>=arr.size)
+        exit(0);
     return arr.arr[idx];
 }
 void Set(Array arr, const int idx, const int & val)
 {
-    cout<<"\n\n------Set Incomplete------\n\n";
+    if(idx>-1)
+    {
     arr.arr[idx] = val;
-}
-void SetArray(Array arr, const int size, int arr1[])
-{
-    cout<<"\n\n------Set Array Incomplete------\n\n";
-    
-    for(int i=0;i<size;i++){
-        arr.arr[i]=arr1[i];
+    }
+    else{
+        cout<<"Error "<<endl;
     }
 }
 void Resize(Array& arr, const int s)
@@ -70,6 +74,23 @@ void Resize(Array& arr, const int s)
     arr.size=s;
     
 }
+void SetArray(Array arr, const int size, int arr1[])
+{
+    DeleteArray(arr);
+    Array sarr=Create(size);
+    
+    for(int i=0;i<size;i++){
+        sarr.arr[i]=arr1[i];
+    }
+}
+
+
+void Push(Array& arr1, const int& val)
+{
+    Resize(arr1,arr1.size+1);
+    arr1.arr[arr1.size-1]=val;
+}
+
 Array Copy(const Array arr)
 {
     
@@ -89,7 +110,7 @@ int Find(const Array arr, const int val)
             return i;
         }
     }
-    return -2;
+    return -1;
 }
 Array Concat(Array arr1, Array arr2)
 {
@@ -116,60 +137,24 @@ void Sort(Array arr)
 }
 Array Union(Array arr1, Array arr2)
 {
-    Array uarr=Create();
-   for(int i=0;i<arr1.size-1;i++)
+    Array unarr=Copy(arr1);
+    for(int i=0;i<arr2.size;i++)
     {
-        if(arr1.arr[i]>arr1.arr[i+1])
+        if((Find(unarr,arr2.arr[i]))==-1)
         {
-            arr1.arr[i],arr1.arr[i+1]=arr1.arr[i+1],arr1.arr[i];
+            Push(unarr,arr2.arr[i]);
         }
     }
-    for(int i=0;i<arr2.size-1;i++)
-    {
-        if(arr2.arr[i]>arr2.arr[i+1])
-        {
-            arr2.arr[i],arr2.arr[i+1]=arr2.arr[i+1],arr2.arr[i];
-        }
-    }
-    int i=0,j=0,c=0;
-    while(i<arr1.size && j<arr2.size)
-    {
-        if(arr1.arr[i]==arr2.arr[j])
-        {
-            uarr.arr[c]=arr1.arr[i];
-            i++;
-            j++;
-            c++;
-        }
-        else if(arr1.arr[i]<arr2.arr[j])
-        {
-            uarr.arr[c]=arr1.arr[i];
-            i++;
-            c++;
-        }
-        else
-        {
-            uarr.arr[c]=arr2.arr[j];
-            j++;
-            c++;
-        }
-    }
-    
-    return uarr;
+    return unarr;
 }
 Array Intersection(Array arr1, Array arr2)
 {
     Array inarr=Create();
-    int c=0;
     for(int i=0;i<arr1.size;i++)
     {
-        for(int j=0;j<arr2.size;j++)
+        if(Find(arr2,arr1.arr[i])!=-1)
         {
-            if(arr1.arr[i]==arr2.arr[j])
-            {
-                inarr.arr[c]=arr1.arr[i];
-                c++;
-            }
+            Push(inarr,arr1.arr[i]);
         }
     }
     return inarr;
@@ -182,8 +167,4 @@ Array Difference(Array arr1, Array arr2)
         arr3.arr[i]=arr1.arr[i]-arr2.arr[i];
     }
     return arr3;
-}
-void Push(Array& arr1, const int& val)
-{
-    
 }
