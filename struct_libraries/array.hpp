@@ -3,9 +3,16 @@ using namespace std;
 
 struct Array
 {
-    int *arr = nullptr;
-    int size = -3;
+    int *list = nullptr;
+    int s = -3;
 };
+
+void SetSize(Array& arr, const int s);
+int GetSize(const Array arr);
+int * GetList(Array arr);
+void SetList(Array arr, int *arr1);
+
+bool check_bound(const Array arr, const int idx);
 
 
 Array Create(int s=10)
